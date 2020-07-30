@@ -1,12 +1,17 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 export const Container = styled.div`
   background: rgba(0, 0, 0, 0.75);
-  padding: 5%;
+  padding: 45px;
   border-radius: 4px;
-  width: 450px;
+  min-width: 400px;
+  width: 22vw;
+  max-width: 600px;
+  position: relative;
   @media (max-width: 800px) {
-    width: 85%;
+    min-width: 0;
+    width: 90%;
   }
 `;
 
@@ -71,8 +76,8 @@ export const Loading = styled.div`
   border: 8px solid rgba(255, 255, 255, 0.3);
   border-top: 8px solid var(--primary);
   border-radius: 50%;
-  width: 5em;
-  height: 5em;
+  width: 4em;
+  height: 4em;
   animation: spin 2s linear infinite;
 
   @keyframes spin {
@@ -83,4 +88,15 @@ export const Loading = styled.div`
       transform: rotate(360deg);
     }
   }
+`;
+
+export const GoBack = styled(Link)`
+  position: absolute;
+  outline: none;
+  text-decoration: none;
+  color: red;
+  font-size: 0.9em;
+  font-weight: 700;
+  bottom: 15px;
+  right: 20px;
 `;

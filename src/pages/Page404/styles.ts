@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { Link } from "react-router-dom";
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 export const Img404 = styled.img`
   @media (max-width: 800px) {
@@ -14,6 +14,7 @@ export const Container = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  background: #141414;
 `;
 
 export const Span = styled.span`
@@ -21,6 +22,7 @@ export const Span = styled.span`
   font-size: 1.1em;
   text-align: center;
   margin-left: 2vw;
+  color: white;
 `;
 
 export const BackLink = styled(Link)`

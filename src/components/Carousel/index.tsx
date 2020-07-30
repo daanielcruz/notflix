@@ -17,8 +17,9 @@ const Carousel = ({
   ignoreFirstVideo,
   category,
 }: {
-  ignoreFirstVideo: boolean;
+  ignoreFirstVideo?: boolean;
   category: iCategory;
+  key?: number;
 }) => {
   const categoryTitle = category.title;
   const videos = category.videos;

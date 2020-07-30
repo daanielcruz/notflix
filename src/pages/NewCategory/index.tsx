@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import PageDefault from '../../components/PageDefault';
-import { Link } from 'react-router-dom';
 import FormField from '../../components/FormField';
 import {
   Title,
@@ -11,6 +10,7 @@ import {
   TitleCategories,
   Ul,
   Categories,
+  GoBack,
 } from './styles';
 
 const NewCategory = () => {
@@ -30,7 +30,7 @@ const NewCategory = () => {
       );
       const response = await crudeResponse.json();
       setCategories([...response]);
-      setIsLoading(!isLoading);
+      setIsLoading(false);
     };
     catchData();
   }, []);
@@ -70,6 +70,8 @@ const NewCategory = () => {
               })}
             </Ul>
           </Categories>
+
+          <GoBack to="/register/video">GO BACK</GoBack>
         </Container>
       )}
     </PageDefault>
