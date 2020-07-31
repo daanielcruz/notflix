@@ -30,7 +30,9 @@ Click <a href="https://notflix-one.vercel.app/" target="_blank">here</a> to prev
 
 ## ❗ ToDo
 
-- Edit and delete feature, i confess being lazy.
+- Edit and delete feature, i confess being lazy;
+- A pretty hover in videocards;
+- Replace the boring alerts for a nice thing.
 
 ## 🔧 Technologies
 
