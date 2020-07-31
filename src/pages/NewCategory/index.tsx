@@ -80,9 +80,12 @@ const NewCategory = () => {
             <Categories>
               <TitleCategories>Last 3 added categories: </TitleCategories>
               <Ul>
-                {categories.slice(0, 3).map((category, index) => {
-                  return <li key={index}>{category.title}</li>;
-                })}
+                {categories
+                  .reverse()
+                  .slice(0, 3)
+                  .map((category, index) => {
+                    return <li key={index}>{category.title}</li>;
+                  })}
               </Ul>
             </Categories>
 

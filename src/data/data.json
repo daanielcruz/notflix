@@ -11,10 +11,6 @@
     {
       "id": 3,
       "title": "Games"
-    },
-    {
-      "title": "teste",
-      "id": 4
     }
   ],
   "videos": [
@@ -149,12 +145,6 @@
       "categoryId": 3,
       "title": "Call of Duty Modern Warfare",
       "url": "https://www.youtube.com/watch?v=dKpL_h7va4w"
-    },
-    {
-      "title": "dasdas",
-      "url": "http://dasdas.com",
-      "categoryId": 4,
-      "id": 22
     }
   ]
 }
