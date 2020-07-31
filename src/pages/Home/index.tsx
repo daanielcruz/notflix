@@ -1,19 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import initialData from '../../data/initial_data.json';
-import Menu from '../../components/Menu';
+import PageDefault from '../../components/PageDefault';
+import { getAllCategoriesWithVideosAsync } from '../../api';
+import { Loading } from '../../styles/global';
+import { Container, LoadContainer } from './styles';
 import BannerMain from '../../components/BannerMain';
 import Carousel from '../../components/Carousel';
-import Footer from '../../components/Footer';
-import { Loading } from '../NewCategory/styles';
-import { Container, LoadContainer } from './styles';
 
 const Home = () => {
   interface iVideos {
+    id: number;
+    categoryId: number;
     title: string;
     url: string;
   }
 
   interface iCategories {
+    id: number;
     title: string;
     videos: iVideos[];
   }
@@ -23,19 +25,20 @@ const Home = () => {
 
   useEffect(() => {
     const catchData = async () => {
-      const crudeResponse = await fetch(
-        'https://notflix-fakend.herokuapp.com/categories',
-      );
-      const response = await crudeResponse.json();
-      setData([...response]);
-      setIsLoading(false);
+      try {
+        const data = await getAllCategoriesWithVideosAsync();
+        setData(data);
+        setIsLoading(false);
+      } catch (e) {
+        console.log(e);
+        alert('Error at API =/');
+      }
     };
     catchData();
   }, []);
 
   return (
-    <>
-      <Menu />
+    <PageDefault>
       <Container>
         {isLoading ? (
           <LoadContainer>
@@ -43,28 +46,30 @@ const Home = () => {
           </LoadContainer>
         ) : (
           <BannerMain
-            videoTitle={initialData.categories[0].videos[0].title}
-            url={initialData.categories[0].videos[0].url}
+            videoTitle={data[0].videos[0].title}
+            url={data[0].videos[0].url}
             videoDescription={
               '[PT-BR] Know everything you need to start with React Native!'
             }
           />
         )}
 
-        {!isLoading &&
-          data
-            .filter((e, i) => i === 0)
-            .map((item, i) => (
-              <Carousel ignoreFirstVideo category={item} key={i} />
-            ))}
+        {!isLoading && (
+          <Carousel
+            ignoreFirstVideo
+            category={data[0]}
+            key={data[0].videos[0].id}
+          />
+        )}
 
         {!isLoading &&
-          data
-            .filter((e, i) => i !== 0)
-            .map((item, i) => <Carousel category={item} key={i} />)}
+          data.map((category, i) => {
+            if (i !== 0) {
+              return <Carousel key={category.id} category={category} />;
+            }
+          })}
       </Container>
-      <Footer />
-    </>
+    </PageDefault>
   );
 };
 

@@ -4,11 +4,14 @@ import Slider from './components/Slider';
 import VideoCard from './components/VideoCard';
 
 interface iVideos {
+  id: number;
+  categoryId: number;
   title: string;
   url: string;
 }
 
 interface iCategory {
+  id: number;
   title: string;
   videos: iVideos[];
 }
@@ -37,7 +40,7 @@ const Carousel = ({
           }
 
           return (
-            <SliderItem key={video.title}>
+            <SliderItem key={video.id}>
               <VideoCard videoTitle={video.title} videoURL={video.url} />
             </SliderItem>
           );

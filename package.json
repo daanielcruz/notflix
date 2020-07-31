@@ -22,7 +22,7 @@
     "typescript": "~3.7.2"
   },
   "scripts": {
-    "server": "json-server --watch ./src/data/initial_data.json --port 8080",
+    "server": "json-server --watch ./src/data/data.json --port 8080",
     "dev": "concurrently \"yarn start\" \"yarn server\"",
     "start": "react-scripts start",
     "build": "react-scripts build",

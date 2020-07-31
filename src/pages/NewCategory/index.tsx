@@ -1,79 +1,101 @@
 import React, { useState, useEffect } from 'react';
 import PageDefault from '../../components/PageDefault';
-import FormField from '../../components/FormField';
+import { getAllCategoriesAsync, registerNewCategoryAsync } from '../../api';
 import {
+  Loading,
+  MainContainerFlix,
+  FormContainer,
   Title,
   Form,
   Button,
-  Loading,
-  Container,
-  TitleCategories,
-  Ul,
-  Categories,
-  GoBack,
-} from './styles';
+} from '../../styles/global';
+import FormField from '../../components/FormField';
+import { TitleCategories, Ul, Categories, EndBox, BackLink } from './styles';
+import { useHistory } from 'react-router-dom';
 
 const NewCategory = () => {
-  interface iCategories {
+  interface iCategory {
+    id: number;
     title: string;
-    videos: Array<Object>;
   }
 
   const [newCategory, setNewCategory] = useState<string>('');
-  const [categories, setCategories] = useState<iCategories[]>([]);
+  const [categories, setCategories] = useState<iCategory[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  const history = useHistory();
 
   useEffect(() => {
     const catchData = async () => {
-      const crudeResponse = await fetch(
-        'https://notflix-fakend.herokuapp.com/categories',
-      );
-      const response = await crudeResponse.json();
-      setCategories([...response]);
-      setIsLoading(false);
+      try {
+        const data = await getAllCategoriesAsync();
+        setCategories(data);
+        setIsLoading(false);
+      } catch (e) {
+        console.log(e);
+        alert('Error at API =/');
+      }
     };
     catchData();
   }, []);
 
   return (
     <PageDefault>
-      {isLoading ? (
-        <Loading />
-      ) : (
-        <Container>
-          <Title> Type your new category: </Title>
-          <Form
-            onSubmit={(event) => {
-              event.preventDefault();
-              setCategories([
-                ...categories,
-                { title: newCategory, videos: [] },
-              ]);
-              setNewCategory('');
-            }}
-          >
-            <FormField
-              label="Name of category"
-              type="text"
-              name="name"
-              value={newCategory}
-              onChange={(event) => setNewCategory(event.target.value)}
-            />
+      <MainContainerFlix>
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <FormContainer>
+            <Title> Type your new category: </Title>
+            <Form
+              onSubmit={(event) => {
+                event.preventDefault();
 
-            <Button type="submit">Submit</Button>
-          </Form>
-          <Categories>
-            <TitleCategories>Last 3 added categories: </TitleCategories>
-            <Ul>
-              {categories.slice(0, 3).map((category, index) => {
-                return <li key={index}>{category.title}</li>;
-              })}
-            </Ul>
-          </Categories>
+                const categoryObject = categories.find(
+                  (category: iCategory) => {
+                    return category.title === newCategory;
+                  },
+                );
 
-          <GoBack to="/register/video">GO BACK</GoBack>
-        </Container>
-      )}
+                if (categoryObject === undefined) {
+                  registerNewCategoryAsync({ title: newCategory }).then(() => {
+                    alert('Success!');
+                    history.push('/');
+                  });
+                } else {
+                  alert('Invalid category!');
+                }
+              }}
+            >
+              <FormField
+                label="Name of category"
+                type="text"
+                name="name"
+                value={newCategory}
+                onChange={(event) => setNewCategory(event.target.value)}
+              />
+
+              <Button type="submit">Submit</Button>
+            </Form>
+            <Categories>
+              <TitleCategories>Last 3 added categories: </TitleCategories>
+              <Ul>
+                {categories.slice(0, 3).map((category, index) => {
+                  return <li key={index}>{category.title}</li>;
+                })}
+              </Ul>
+            </Categories>
+
+            <EndBox>
+              <span>
+                If you want you can{' '}
+                <BackLink to="/register/video"> go back</BackLink> or
+                <BackLink to="/"> go home</BackLink>.
+              </span>
+            </EndBox>
+          </FormContainer>
+        )}
+      </MainContainerFlix>
     </PageDefault>
   );
 };
