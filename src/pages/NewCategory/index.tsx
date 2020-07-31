@@ -81,8 +81,8 @@ const NewCategory = () => {
               <TitleCategories>Last 3 added categories: </TitleCategories>
               <Ul>
                 {categories
+                  .slice(Math.max(categories.length - 3, 0))
                   .reverse()
-                  .slice(0, 3)
                   .map((category, index) => {
                     return <li key={index}>{category.title}</li>;
                   })}
