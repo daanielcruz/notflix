@@ -20,7 +20,7 @@
 Notflix is a ReactJS website made with study purposes during the "Imersão React" event by alura.
 
 <h3 align="center">
-Click <a href="https://notflix-one.vercel.app/">here</a> to preview a deployed demo!! :fire::fire::fire:
+Click <a href="https://notflix-one.vercel.app/" target="_blank">here</a> to preview a deployed demo!! :fire::fire::fire:
 </h3>
 
 <h1 align="center">
