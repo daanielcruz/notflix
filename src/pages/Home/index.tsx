@@ -65,7 +65,8 @@ const Home = () => {
         {!isLoading &&
           data.map((category, i) => {
             if (i !== 0) {
-              return <Carousel key={category.id} category={category} />;
+              if (category.videos.length > 0)
+                return <Carousel key={category.id} category={category} />;
             }
           })}
       </Container>
