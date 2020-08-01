@@ -10,6 +10,7 @@
 </p>
 <p align="center">
   <a href="#-project">Project</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#-todo">ToDo</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#-technologies">Technologies</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#-how-to-use">How to use</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#-how-to-contribute">How to contribute</a>&nbsp;&nbsp;&nbsp;
@@ -26,6 +27,13 @@ Click <a href="https://notflix-one.vercel.app/" target="_blank">here</a> to prev
 <h1 align="center">
  <img alt="Example" title="Example" src=".github/notflix_presentation.gif" width="800px" />
 </h1>
+
+## ❗ ToDo
+
+- Edit and delete feature, i confess being lazy;
+- A pretty hover in videocards;
+- Replace the boring alerts for a nice thing;
+- A pretty modal to play videos!
 
 
 ## 🔧 Technologies
