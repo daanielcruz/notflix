@@ -32,7 +32,7 @@ Click <a href="https://notflix-one.vercel.app/" target="_blank">here</a> to prev
 
 - Edit and delete feature, i confess being lazy ❌
 - A pretty hover in videocards - Done! ✔️
-- Replace the boring alerts for a nice thing ❌
+- Replace the boring alerts for a nice thing - Done! ✔️
 - A pretty modal to play videos - Done! ✔️
 
 ## 🔧 Technologies

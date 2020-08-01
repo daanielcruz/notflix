@@ -12,6 +12,8 @@ import {
 import FormField from '../../components/FormField';
 import { TitleCategories, Ul, Categories, EndBox, BackLink } from './styles';
 import { useHistory } from 'react-router-dom';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 
 const NewCategory = () => {
   interface iCategory {
@@ -22,8 +24,28 @@ const NewCategory = () => {
   const [newCategory, setNewCategory] = useState<string>('');
   const [categories, setCategories] = useState<iCategory[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [errorSnackShow, setErrorSnackShow] = useState(false);
+  const [successSnackShow, setSuccessSnackShow] = useState(false);
+  const [redirectSnackShow, setRedirectSnackShow] = useState(false);
 
   const history = useHistory();
+
+  const Alert = (props: AlertProps) => {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+  };
+
+  const errorSnackClose = () => {
+    setErrorSnackShow(false);
+  };
+
+  const redirectBack = () => {
+    history.push('/register/video');
+  };
+
+  const successSnackClose = () => {
+    setSuccessSnackShow(false);
+    setRedirectSnackShow(true);
+  };
 
   useEffect(() => {
     const catchData = async () => {
@@ -59,11 +81,10 @@ const NewCategory = () => {
 
                 if (categoryObject === undefined) {
                   registerNewCategoryAsync({ title: newCategory }).then(() => {
-                    alert('Success!');
-                    history.push('/');
+                    setSuccessSnackShow(true);
                   });
                 } else {
-                  alert('Invalid category!');
+                  setErrorSnackShow(true);
                 }
               }}
             >
@@ -76,6 +97,30 @@ const NewCategory = () => {
               />
 
               <Button type="submit">Submit</Button>
+              <Snackbar
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+                open={errorSnackShow}
+                autoHideDuration={2000}
+                onClose={errorSnackClose}
+              >
+                <Alert severity="error">Category already exists!</Alert>
+              </Snackbar>
+              <Snackbar
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+                open={successSnackShow}
+                autoHideDuration={1000}
+                onClose={successSnackClose}
+              >
+                <Alert severity="success">Success!</Alert>
+              </Snackbar>
+              <Snackbar
+                open={redirectSnackShow}
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+                autoHideDuration={3000}
+                onClose={redirectBack}
+              >
+                <Alert severity="info">Redirecting you back...</Alert>
+              </Snackbar>
             </Form>
             <Categories>
               <TitleCategories>Last 3 added categories: </TitleCategories>
