@@ -27,7 +27,9 @@ const VideoCard = ({
         url={image}
         title={videoTitle}
         onClick={() => setModalIsOpen(!modalIsOpen)}
-      />
+      >
+        <span>{videoTitle}</span>
+      </VideoCardContainer>
 
       {modalIsOpen && (
         <ModalContainer open={modalIsOpen}>

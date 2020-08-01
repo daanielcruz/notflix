@@ -16,11 +16,29 @@ export const VideoCardContainer = styled.a`
   display: flex;
   align-items: flex-end;
   padding: 16px;
-
   transition: opacity 0.3s;
+
+  > span {
+    visibility: hidden;
+  }
+
   &:hover,
   &:focus {
-    opacity: 0.5;
+    > span {
+      visibility: visible;
+      color: var(--black);
+      padding-left: 5px;
+      position: absolute;
+      display: block;
+      width: 100%;
+      height: auto;
+      min-height: 30px;
+      background: rgba(255, 255, 255, 0.5);
+      bottom: 0px;
+      left: 0px;
+      font-size: 14px;
+      font-weight: 600;
+    }
   }
 
   &:not(:first-child) {

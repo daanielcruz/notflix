@@ -30,11 +30,10 @@ Click <a href="https://notflix-one.vercel.app/" target="_blank">here</a> to prev
 
 ## ❗ ToDo
 
-- Edit and delete feature, i confess being lazy;
-- A pretty hover in videocards;
-- Replace the boring alerts for a nice thing;
-- A pretty modal to play videos!
-
+- Edit and delete feature, i confess being lazy ❌
+- A pretty hover in videocards - Done! ✔️
+- Replace the boring alerts for a nice thing ❌
+- A pretty modal to play videos - Done! ✔️
 
 ## 🔧 Technologies
 
@@ -43,7 +42,6 @@ This project was developed with the following technologies:
 - [TypeScript][typescript]
 - [React][reactjs]
 - [Styled-Components](https://styled-components.com/)
-
 
 ## ❓ How To Use
 
@@ -82,7 +80,7 @@ Made with ♥ by Daniel Cruz :wave: [Get in touch!](https://www.linkedin.com/in/
 [nodejs]: https://nodejs.org/
 [typescript]: https://www.typescriptlang.org/
 [reactjs]: https://reactjs.org
-[styled-components]:https://styled-components.com/
+[styled-components]: https://styled-components.com/
 [yarn]: https://yarnpkg.com/
 [vs]: https://code.visualstudio.com/
 [vceditconfig]: https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig
