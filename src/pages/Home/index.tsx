@@ -67,6 +67,9 @@ const Home = () => {
             if (i !== 0) {
               if (category.videos.length > 0)
                 return <Carousel key={category.id} category={category} />;
+              return null;
+            } else {
+              return null;
             }
           })}
       </Container>
