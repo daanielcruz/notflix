@@ -7,8 +7,8 @@ export const VideoCardContainer = styled.a`
   cursor: pointer;
   color: white;
   flex: 0 0 298px;
-  width: 298px;
-  height: 197px;
+  width: 355px;
+  height: 200px;
   background-image: ${({ url }: { url: string }) => `url(${url})`};
   background-size: cover;
   background-position: center;
@@ -17,7 +17,7 @@ export const VideoCardContainer = styled.a`
   align-items: flex-end;
   padding: 16px;
   transition: opacity 0.3s;
-
+  border-radius: 6px;
   > span {
     visibility: hidden;
   }
@@ -26,17 +26,17 @@ export const VideoCardContainer = styled.a`
   &:focus {
     > span {
       visibility: visible;
-      color: var(--black);
+      color: var(--white);
       padding-left: 5px;
       position: absolute;
       display: block;
       width: 100%;
-      height: auto;
-      min-height: 30px;
-      background: rgba(255, 255, 255, 0.5);
-      bottom: 0px;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      top: 0px;
       left: 0px;
-      font-size: 14px;
+      padding: 10px;
+      font-size: 16px;
       font-weight: 600;
     }
   }

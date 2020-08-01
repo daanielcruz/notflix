@@ -14,7 +14,7 @@ const Slider = ({ children }: { children: React.ReactNode }) => {
           dots: false,
           infinite: true,
           speed: 300,
-          centerMode: true,
+          centerMode: false,
           variableWidth: true,
           adaptiveHeight: true,
           nextArrow: (

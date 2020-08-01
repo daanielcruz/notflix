@@ -19,7 +19,7 @@ const VideoCard = ({
 
   const image = `https://img.youtube.com/vi/${getYouTubeId(
     videoURL,
-  )}/hqdefault.jpg`;
+  )}/maxresdefault.jpg`;
 
   return (
     <>
