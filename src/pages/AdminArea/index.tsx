@@ -152,8 +152,7 @@ const AdminArea = () => {
                 },
               }}
               editable={{
-                //@ts-ignore
-                onRowUpdate: (newData: iVideos, oldData: iVideos) =>
+                onRowUpdate: (newData: iVideos, oldData: iVideos | any) =>
                   new Promise((resolve, reject) => {
                     setTimeout(() => {
                       {
