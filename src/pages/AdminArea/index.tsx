@@ -348,9 +348,9 @@ const AdminArea = () => {
               </Paper>
               <EndBox>
                 <span>
-                  If you want you can go
+                  You can go to
                   <BackLink to="/register/video"> new video area</BackLink> or
-                  <BackLink to="/"> go home</BackLink>.
+                  <BackLink to="/"> go home</BackLink>, if you want.
                 </span>
               </EndBox>
             </>
