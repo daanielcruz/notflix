@@ -30,7 +30,7 @@ Click <a href="https://notflix-one.vercel.app/" target="_blank">here</a> to prev
 
 ## ❗ ToDo
 
-- Edit and delete feature, i confess being lazy - Done!? Maybe xgh mode, i'm sorry! ❓
+- Edit and delete feature, i confess being lazy - now is... Done! ✔️
 - A pretty hover in videocards - Done! ✔️
 - Replace the boring alerts for a nice thing - Done! ✔️
 - A pretty modal to play videos - Done! ✔️

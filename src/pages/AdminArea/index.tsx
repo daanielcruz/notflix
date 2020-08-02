@@ -129,115 +129,113 @@ const AdminArea = () => {
   return (
     <PageDefault>
       <MainContainerFlix>
-        <FormContainer>
-          {isLoading ? (
-            <Loading />
-          ) : (
-            <>
-              <MaterialTable
-                style={{ background: 'lightgray' }}
-                title="Admin area"
-                columns={[
-                  { title: 'Title', field: 'title' },
-                  { title: 'Video URL', field: 'url' },
-                  { title: 'Category', field: 'categoryName' },
-                ]}
-                data={rows}
-                options={{
-                  headerStyle: {
-                    backgroundColor: 'gray',
-                    color: '#FFF',
-                  },
-                  rowStyle: {
-                    backgroundColor: '#EEE',
-                  },
-                }}
-                editable={{
-                  //@ts-ignore
-                  onRowUpdate: (newData: iVideos, oldData: iVideos) =>
-                    new Promise((resolve, reject) => {
-                      setTimeout(() => {
-                        {
-                          const dataUpdate = [...rows];
-                          const index = rows.findIndex(
-                            (x) => x.id === oldData.id,
-                          );
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <FormContainer>
+            <MaterialTable
+              style={{ background: 'lightgray' }}
+              title="Admin area"
+              columns={[
+                { title: 'Title', field: 'title' },
+                { title: 'Video URL', field: 'url' },
+                { title: 'Category', field: 'categoryName' },
+              ]}
+              data={rows}
+              options={{
+                headerStyle: {
+                  backgroundColor: 'gray',
+                  color: '#FFF',
+                },
+                rowStyle: {
+                  backgroundColor: '#EEE',
+                },
+              }}
+              editable={{
+                //@ts-ignore
+                onRowUpdate: (newData: iVideos, oldData: iVideos) =>
+                  new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                      {
+                        const dataUpdate = [...rows];
+                        const index = rows.findIndex(
+                          (x) => x.id === oldData.id,
+                        );
 
-                          if (
-                            dataUpdate[index].title === newData.title &&
-                            dataUpdate[index].url === newData.url &&
-                            dataUpdate[index].categoryName ===
-                              newData.categoryName
-                          ) {
-                            //do nothing
-                          } else {
-                            editTheVideo(newData);
-                            dataUpdate[index] = newData;
-
-                            setRows([...dataUpdate]);
-                          }
-                        }
-                        resolve();
-                      }, 1000);
-                    }),
-                  onRowDelete: (oldData: iVideos) =>
-                    new Promise((resolve, reject) => {
-                      setTimeout(() => {
-                        {
-                          deleteTheVideo(oldData.id, oldData.categoryId);
-                          const dataUpdate = [...rows];
-                          const index = rows.findIndex(
-                            (x) => x.id === oldData.id,
-                          );
-                          dataUpdate.splice(index, 1);
+                        if (
+                          dataUpdate[index].title === newData.title &&
+                          dataUpdate[index].url === newData.url &&
+                          dataUpdate[index].categoryName ===
+                            newData.categoryName
+                        ) {
+                          //do nothing
+                        } else {
+                          editTheVideo(newData);
+                          dataUpdate[index] = newData;
 
                           setRows([...dataUpdate]);
                         }
-                        resolve();
-                      }, 1000);
-                    }),
-                }}
-              />
+                      }
+                      resolve();
+                    }, 1000);
+                  }),
+                onRowDelete: (oldData: iVideos) =>
+                  new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                      {
+                        deleteTheVideo(oldData.id, oldData.categoryId);
+                        const dataUpdate = [...rows];
+                        const index = rows.findIndex(
+                          (x) => x.id === oldData.id,
+                        );
+                        dataUpdate.splice(index, 1);
 
-              <EndBox>
-                <span>
-                  You can go to
-                  <BackLink to="/register/video"> new video area</BackLink> or
-                  <BackLink to="/"> go home</BackLink>, if you want.
-                </span>
-              </EndBox>
-            </>
-          )}
+                        setRows([...dataUpdate]);
+                      }
+                      resolve();
+                    }, 1000);
+                  }),
+              }}
+            />
 
-          <Snackbar
-            anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-            open={successSnackShow}
-            autoHideDuration={1000}
-            onClose={successSnackClose}
-          >
-            <Alert severity="success">Success!</Alert>
-          </Snackbar>
-          <Snackbar
-            anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-            open={createdCategorySnackShow}
-            autoHideDuration={2000}
-            onClose={createdCategorySnackClose}
-          >
-            <Alert severity="info">
-              Category doensn't exists, creating for you...
-            </Alert>
-          </Snackbar>
-          <Snackbar
-            open={deletedCategorySnackShow}
-            anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-            autoHideDuration={2000}
-            onClose={deletedCategorySnackClose}
-          >
-            <Alert severity="info">
-              Last item, deleting the category too...
-            </Alert>
-          </Snackbar>
-        </FormContainer>
+            <EndBox>
+              <span>
+                You can go to
+                <BackLink to="/register/video"> new video area</BackLink> or
+                <BackLink to="/"> go home</BackLink>, if you want.
+              </span>
+            </EndBox>
+
+            <Snackbar
+              anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+              open={successSnackShow}
+              autoHideDuration={1000}
+              onClose={successSnackClose}
+            >
+              <Alert severity="success">Success!</Alert>
+            </Snackbar>
+            <Snackbar
+              anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+              open={createdCategorySnackShow}
+              autoHideDuration={2000}
+              onClose={createdCategorySnackClose}
+            >
+              <Alert severity="info">
+                Category doensn't exists, creating for you...
+              </Alert>
+            </Snackbar>
+            <Snackbar
+              open={deletedCategorySnackShow}
+              anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+              autoHideDuration={2000}
+              onClose={deletedCategorySnackClose}
+            >
+              <Alert severity="info">
+                Last item, deleting the category too...
+              </Alert>
+            </Snackbar>
+          </FormContainer>
+        )}
       </MainContainerFlix>
     </PageDefault>
   );
