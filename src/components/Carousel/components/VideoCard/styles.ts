@@ -54,7 +54,6 @@ export const ModalContent = styled.div`
   height: 500px;
   position: relative;
   outline: none;
-  border: 1px solid rgb(229, 9, 20, 0.5);
   > span {
     position: absolute;
     top: 8px;
