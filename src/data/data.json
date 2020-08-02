@@ -7,6 +7,10 @@
     {
       "id": 2,
       "title": "Movies"
+    },
+    {
+      "id": 3,
+      "title": "Games"
     }
   ],
   "videos": [
@@ -97,7 +101,7 @@
     {
       "id": 14,
       "categoryId": 3,
-      "text": "10 Minutes Of INSANE VIDEO GAMES in REAL LIFE!",
+     "title": "10 Minutes Of INSANE VIDEO GAMES in REAL LIFE!",
       "url": "https://www.youtube.com/watch?v=jEUEL6L_1Is"
     },
     {

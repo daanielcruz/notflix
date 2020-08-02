@@ -8,6 +8,7 @@ export const EndBox = styled.div`
   padding-top: 25px;
   font-size: 1.1em;
   color: white;
+  flex-direction: column;
 `;
 
 export const BackLink = styled(Link)`
@@ -17,4 +18,13 @@ export const BackLink = styled(Link)`
   &:hover {
     color: rgb(229, 9, 20, 0.7);
   }
+`;
+
+export const Hr = styled.hr`
+  display: block !important;
+  background-color: var(--arrow);
+  width: 200px;
+  height: 1px;
+  border: none;
+  margin-top: 10px;
 `;

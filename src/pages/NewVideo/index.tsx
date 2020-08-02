@@ -9,7 +9,7 @@ import {
   Button,
   Loading,
 } from '../../styles/global';
-import { EndBox, BackLink } from './styles';
+import { EndBox, BackLink, Hr } from './styles';
 import FormField from '../../components/FormField';
 import { useHistory } from 'react-router-dom';
 import Snackbar from '@material-ui/core/Snackbar';
@@ -99,13 +99,10 @@ const NewVideo = () => {
                   },
                 );
 
-                if (categoryObject === undefined) {
-                  setErrorSnackShow(true);
-                } else {
-                  registerNewVideoAsync(values).then(() => {
-                    setSuccessSnackShow(true);
-                  });
-                }
+                registerNewVideoAsync(values).then(() => {
+                  setValues(initialValues);
+                  setSuccessSnackShow(true);
+                });
               }}
             >
               <FormField
@@ -160,10 +157,18 @@ const NewVideo = () => {
             </Form>
             <EndBox>
               <span>
-                Register{' '}
-                <BackLink to="/register/category"> new category</BackLink> or
-                <BackLink to="/"> go back</BackLink>.
+                GO
+                <BackLink to="/"> BACK</BackLink>.
               </span>
+              <Hr />
+              <div
+                style={{
+                  fontWeight: 'bold',
+                  textDecoration: 'underline',
+                }}
+              >
+                <BackLink to="/admin">ADMIN AREA</BackLink>
+              </div>
             </EndBox>
           </FormContainer>
         )}

@@ -37,39 +37,40 @@ const Home = () => {
     catchData();
   }, []);
 
+  let count = 0;
+
   return (
     <PageDefault>
       <Container>
-        {isLoading ? (
+        {isLoading && (
           <LoadContainer>
             <Loading />
           </LoadContainer>
-        ) : (
-          <BannerMain
-            videoTitle={data[0].videos[0].title}
-            url={data[0].videos[0].url}
-            videoDescription={
-              '[PT-BR] Know everything you need to start with React Native!'
-            }
-          />
-        )}
-
-        {!isLoading && (
-          <Carousel
-            ignoreFirstVideo
-            category={data[0]}
-            key={data[0].videos[0].id}
-          />
         )}
 
         {!isLoading &&
           data.map((category, i) => {
-            if (i !== 0) {
+            if (count === 0) {
+              if (category.videos.length > 0) {
+                count++;
+                return (
+                  <>
+                    <BannerMain
+                      videoTitle={category.videos[0].title}
+                      url={category.videos[0].url}
+                      videoDescription={'Welcome to NotFlix!'}
+                    />
+                    <Carousel
+                      ignoreFirstVideo
+                      category={category}
+                      key={category.id}
+                    />
+                  </>
+                );
+              }
+            } else {
               if (category.videos.length > 0)
                 return <Carousel key={category.id} category={category} />;
-              return null;
-            } else {
-              return null;
             }
           })}
       </Container>
