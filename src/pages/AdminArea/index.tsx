@@ -253,7 +253,7 @@ const AdminArea = () => {
 
               <Paper className={classes.root}>
                 <Table className={classes.table} aria-label="caption table">
-                  {data.length === 0 ? (
+                  {data !== undefined && data.length === 0 ? (
                     <h1>There is no videos =(((((</h1>
                   ) : (
                     <>
@@ -294,23 +294,27 @@ const AdminArea = () => {
                                     <IconButton
                                       aria-label="delete"
                                       onClick={() => {
-                                        const isLastItem = data.find(
-                                          (category) => {
-                                            return (
-                                              category.id == row.categoryId
-                                            );
-                                          },
-                                        );
+                                        if (data !== undefined) {
+                                          const isLastItem = data.find(
+                                            (category) => {
+                                              return (
+                                                category.id == row.categoryId
+                                              );
+                                            },
+                                          );
 
-                                        if (isLastItem !== undefined)
-                                          if (isLastItem.videos.length > 1) {
-                                            handleClickOpenDeleteDialog(row.id);
-                                          } else {
-                                            handleClickOpenDeleteDialog({
-                                              videoId: row.id,
-                                              categoryId: row.categoryId,
-                                            });
-                                          }
+                                          if (isLastItem !== undefined)
+                                            if (isLastItem.videos.length > 1) {
+                                              handleClickOpenDeleteDialog(
+                                                row.id,
+                                              );
+                                            } else {
+                                              handleClickOpenDeleteDialog({
+                                                videoId: row.id,
+                                                categoryId: row.categoryId,
+                                              });
+                                            }
+                                        }
                                       }}
                                     >
                                       <DeleteIcon />
