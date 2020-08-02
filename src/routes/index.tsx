@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Home from '../pages/Home';
 import NewVideo from '../pages/NewVideo';
-import NewCategory from '../pages/NewCategory';
+/* import NewCategory from '../pages/NewCategory'; */
 import AdminArea from '../pages/AdminArea';
 import Page404 from '../pages/Page404';
 

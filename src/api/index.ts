@@ -3,6 +3,8 @@ interface iNewVideo {
   title: string;
   url: string;
   categoryId: number | string;
+  categoryName?: string;
+  oldCategoryId?: number;
 }
 
 interface iCategory {
@@ -77,29 +79,94 @@ export const registerNewCategoryAsync = async (body: iCategory) => {
   });
 };
 
-export const deleteVideoAsync = async (id: number | ObjectToDelete) => {
-  if (typeof id === 'number') {
-    await fetch(`${URL}/videos/${id}`, {
+export const deleteVideoAsync = async (videoId: number, categoryId: number) => {
+  let crudeResponse = await fetch(`${URL}/categories/${categoryId}/videos`);
+  let allVideos = await crudeResponse.json();
+
+  if (allVideos.length > 1) {
+    await fetch(`${URL}/videos/${videoId}`, {
       method: 'DELETE',
     });
+    return false;
   } else {
-    await fetch(`${URL}/categories/${id.categoryId}`, {
+    await fetch(`${URL}/videos/${videoId}`, {
+      method: 'DELETE',
+    });
+    await fetch(`${URL}/categories/${categoryId}`, {
       method: 'DELETE',
     });
 
-    await fetch(`${URL}/videos/${id.videoId}`, {
-      method: 'DELETE',
-    });
+    return true;
   }
-  return;
 };
 
 export const editVideoAsync = async (body: iNewVideo) => {
-  await fetch(`${URL}/videos/${body.id}`, {
-    method: 'PATCH',
-    headers: {
-      'Content-type': 'application/json',
-    },
-    body: JSON.stringify(body),
+  let crudeResponse = await fetch(`${URL}/categories`);
+  let categories = await crudeResponse.json();
+
+  let categoryObject = categories.find((category: iCategory) => {
+    return category.title === body.categoryName;
   });
+
+  const newData = {
+    id: body.id,
+    categoryId: body.categoryId,
+    title: body.title,
+    url: body.url,
+  };
+
+  let categoryExists;
+
+  if (categoryObject !== undefined) {
+    newData.categoryId = categoryObject.id;
+    await fetch(`${URL}/videos/${body.id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(newData),
+    });
+
+    categoryExists = true;
+  } else {
+    await fetch(`${URL}/categories`, {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify({ title: body.categoryName }),
+    });
+
+    crudeResponse = await fetch(`${URL}/categories`);
+    categories = await crudeResponse.json();
+    categoryObject = categories.find((category: iCategory) => {
+      return category.title === body.categoryName;
+    });
+    newData.categoryId = categoryObject.id;
+
+    await fetch(`${URL}/videos/${body.id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(newData),
+    });
+
+    categoryExists = false;
+  }
+
+  const anotherCrudeResponse = await fetch(
+    `${URL}/categories/${body.categoryId}/videos`,
+  );
+  const allVideos = await anotherCrudeResponse.json();
+
+  let isLast = false;
+  if (allVideos.length <= 0) {
+    isLast = true;
+    await fetch(`${URL}/categories/${body.categoryId}`, {
+      method: 'DELETE',
+    });
+  }
+
+  return { categoryExists, isLast };
 };

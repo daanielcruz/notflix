@@ -9,6 +9,9 @@ export const EndBox = styled.div`
   font-size: 1.1em;
   color: white;
   flex-direction: column;
+  @media (max-width: 800px) {
+    padding: 0;
+  }
 `;
 
 export const BackLink = styled(Link)`

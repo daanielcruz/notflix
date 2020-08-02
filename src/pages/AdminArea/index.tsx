@@ -5,151 +5,53 @@ import {
   deleteVideoAsync,
   editVideoAsync,
 } from '../../api';
-import { Loading, MainContainerFlix, Title } from '../../styles/global';
-import { FormContainer } from './styles';
-import { makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Input from '@material-ui/core/Input';
-import Paper from '@material-ui/core/Paper';
-import IconButton from '@material-ui/core/IconButton';
-import EditIcon from '@material-ui/icons/EditOutlined';
-import DoneIcon from '@material-ui/icons/DoneAllTwoTone';
-import RevertIcon from '@material-ui/icons/NotInterestedOutlined';
-import DeleteIcon from '@material-ui/icons/DeleteOutlined';
-import { EndBox, BackLink } from '../NewVideo/styles';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import { Loading, MainContainerFlix } from '../../styles/global';
+import { FormContainer, EndBox, BackLink } from './styles';
+// @ts-ignore
+import MaterialTable from 'material-table';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 
-interface iVideos {
-  id: number;
-  categoryId: number;
-  title: string;
-  url: string;
-  isEditMode?: boolean;
-  categoryName?: string;
-}
-
-interface iCategories {
-  id: number;
-  title: string;
-  videos: iVideos[];
-}
-
-interface ObjectToDelete {
-  videoId: number;
-  categoryId: number;
-}
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: '100%',
-    marginTop: theme.spacing(3),
-    overflowX: 'auto',
-    height: 400,
-  },
-  table: {
-    minWidth: 650,
-  },
-  selectTableCell: {
-    width: 60,
-  },
-  tableCell: {
-    width: 130,
-    height: 40,
-  },
-  input: {
-    width: 130,
-    height: 40,
-  },
-}));
-
-const CustomTableCell = ({
-  row,
-  name,
-  onChange,
-}: {
-  row: iVideos;
-  name: 'title' | 'url' | 'categoryName';
-  onChange: (e: React.ChangeEvent<HTMLInputElement>, row: iVideos) => void;
-}) => {
-  const classes = useStyles();
-  const { isEditMode } = row;
-  return (
-    <TableCell className={classes.tableCell} align="left">
-      {isEditMode ? (
-        <Input
-          value={row[name]}
-          name={name}
-          className={classes.input}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            onChange(e, row)
-          }
-        />
-      ) : (
-        row[name]
-      )}
-    </TableCell>
-  );
-};
-
 const AdminArea = () => {
+  interface iVideos {
+    id: number;
+    categoryId: number;
+    title: string;
+    url: string;
+    isEditMode?: boolean;
+    categoryName?: string;
+    oldCategoryId?: number;
+  }
+
+  interface iCategories {
+    id: number;
+    title: string;
+    videos: iVideos[];
+  }
+
+  interface ObjectToDelete {
+    videoId: number;
+    categoryId: number;
+  }
+
   const [data, setData] = useState<iCategories[]>();
   const [rows, setRows] = useState<iVideos[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [isEdited, setIsEdited] = useState(1);
-  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
-  const [openEditDialog, setOpenEditDialog] = useState(false);
-  const [tempContentToDelete, setTempContentToDelete] = useState<
-    number | ObjectToDelete
-  >(0);
-  const [tempContentToEdit, setTempContentToEdit] = useState<iVideos>({
-    id: 0,
-    categoryId: 0,
-    title: '',
-    url: '',
-    isEditMode: false,
-    categoryName: '',
-  });
+  const [isEdited, setIsEdited] = useState(0);
   const [successSnackShow, setSuccessSnackShow] = useState(false);
-  const [
-    successAndCategorySnackShow,
-    setSuccessAndCategorySnackShow,
-  ] = useState(false);
+  const [createdCategorySnackShow, setCreatedCategorySnackShow] = useState(
+    false,
+  );
   const [deletedCategorySnackShow, setDeletedCategorySnackShow] = useState(
     false,
   );
-
-  const classes = useStyles();
 
   const Alert = (props: AlertProps) => {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
   };
 
-  const successSnackClose = () => {
-    setSuccessSnackShow(false);
-  };
-
-  const successAndCategorySnackClose = () => {
-    setSuccessAndCategorySnackShow(false);
-    setDeletedCategorySnackShow(true);
-  };
-
-  const deletedCategorySnackClose = () => {
-    setDeletedCategorySnackShow(false);
-  };
-
   useEffect(() => {
-    setIsLoading(true);
+    /* setIsLoading(true); */
     const catchData = async () => {
       try {
         const data = await getAllCategoriesWithVideosAsync();
@@ -162,10 +64,9 @@ const AdminArea = () => {
     catchData();
   }, [isEdited]);
 
-  const arrayOfVideos: iVideos[] = [];
-
   useEffect(() => {
     if (data !== undefined) {
+      const arrayOfVideos: iVideos[] = [];
       data.map((category) => {
         category.videos.map((video) => {
           arrayOfVideos.push({
@@ -173,72 +74,56 @@ const AdminArea = () => {
             isEditMode: false,
             categoryName: category.title,
           });
+          return null;
         });
+        return null;
       });
       setRows(arrayOfVideos);
       setIsLoading(false);
     }
   }, [data]);
 
-  const onToggleEditMode = (id: number) => {
-    setRows((state) => {
-      return rows.map((row) => {
-        if (row.id === id) {
-          return { ...row, isEditMode: !row.isEditMode };
-        }
-        return row;
-      });
-    });
-  };
-
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>, row: iVideos) => {
-    const value = e.target.value;
-    const name = e.target.name;
-    const { id } = row;
-    const newRows = rows.map((row) => {
-      if (row.id === id) {
-        return { ...row, [name]: value };
-      }
-      return row;
-    });
-    setRows(newRows);
-  };
-
-  const deleteTheVideo = async () => {
-    await deleteVideoAsync(tempContentToDelete);
-    setOpenDeleteDialog(false);
+  const createdCategorySnackClose = () => {
+    setCreatedCategorySnackShow(false);
     setIsEdited(isEdited + 1);
+  };
+  const deletedCategorySnackClose = () => {
+    setDeletedCategorySnackShow(false);
+    setIsEdited(isEdited + 1);
+  };
 
-    if (typeof tempContentToDelete === 'number') {
+  const successSnackClose = () => {
+    setSuccessSnackShow(false);
+  };
+
+  const deleteTheVideo = async (videoId: number, categoryId: number) => {
+    const isLastItem = await deleteVideoAsync(videoId, categoryId);
+
+    if (!isLastItem) {
       setSuccessSnackShow(true);
     } else {
-      setSuccessAndCategorySnackShow(true);
+      setSuccessSnackShow(true);
+      setTimeout(() => setDeletedCategorySnackShow(true), 1000);
     }
   };
 
-  const editTheVideo = async () => {
-    await editVideoAsync(tempContentToEdit);
-    setOpenEditDialog(false);
-    setIsEdited(isEdited + 1);
-    setSuccessSnackShow(true);
-  };
+  const editTheVideo = async (newData: iVideos) => {
+    const { categoryExists, isLast } = await editVideoAsync(newData);
 
-  const handleClickOpenDeleteDialog = (id: number | ObjectToDelete) => {
-    setOpenDeleteDialog(true);
-    setTempContentToDelete(id);
-  };
-
-  const handleCloseDeleteDialog = () => {
-    setOpenDeleteDialog(false);
-  };
-
-  const handleClickOpenEditDialog = (Video: iVideos) => {
-    setOpenEditDialog(true);
-    setTempContentToEdit(Video);
-  };
-
-  const handleCloseEditDialog = () => {
-    setOpenEditDialog(false);
+    console.log(categoryExists + ' ' + isLast);
+    if (categoryExists && isLast) {
+      setSuccessSnackShow(true);
+      setTimeout(() => setDeletedCategorySnackShow(true), 1000);
+    } else if (categoryExists && !isLast) {
+      setSuccessSnackShow(true);
+    } else if (!categoryExists && !isLast) {
+      setSuccessSnackShow(true);
+      setTimeout(() => setCreatedCategorySnackShow(true), 1000);
+    } else if (!categoryExists && isLast) {
+      setSuccessSnackShow(true);
+      setTimeout(() => setDeletedCategorySnackShow(true), 1000);
+      setTimeout(() => setCreatedCategorySnackShow(true), 3000);
+    }
   };
 
   return (
@@ -249,103 +134,71 @@ const AdminArea = () => {
             <Loading />
           ) : (
             <>
-              <Title> Admin Area </Title>
+              <MaterialTable
+                style={{ background: 'lightgray' }}
+                title="Admin area"
+                columns={[
+                  { title: 'Title', field: 'title' },
+                  { title: 'Video URL', field: 'url' },
+                  { title: 'Category', field: 'categoryName' },
+                ]}
+                data={rows}
+                options={{
+                  headerStyle: {
+                    backgroundColor: 'gray',
+                    color: '#FFF',
+                  },
+                  rowStyle: {
+                    backgroundColor: '#EEE',
+                  },
+                }}
+                editable={{
+                  //@ts-ignore
+                  onRowUpdate: (newData: iVideos, oldData: iVideos) =>
+                    new Promise((resolve, reject) => {
+                      setTimeout(() => {
+                        {
+                          const dataUpdate = [...rows];
+                          const index = rows.findIndex(
+                            (x) => x.id === oldData.id,
+                          );
 
-              <Paper className={classes.root}>
-                <Table className={classes.table} aria-label="caption table">
-                  {data !== undefined && data.length === 0 ? (
-                    <h1>There is no videos =(((((</h1>
-                  ) : (
-                    <>
-                      <TableHead>
-                        <TableRow>
-                          <TableCell align="left" />
-                          <TableCell align="left">Video Title</TableCell>
-                          <TableCell align="left">Category</TableCell>
-                          <TableCell align="left">Url&nbsp;</TableCell>
-                        </TableRow>
-                      </TableHead>
-                      <TableBody>
-                        {!isLoading &&
-                          rows.map((row) => (
-                            <TableRow key={row.id}>
-                              <TableCell className={classes.selectTableCell}>
-                                {row.isEditMode ? (
-                                  <>
-                                    <IconButton
-                                      aria-label="done"
-                                      onClick={() =>
-                                        handleClickOpenEditDialog({
-                                          id: row.id,
-                                          categoryId: row.categoryId,
-                                          title: row.title,
-                                          url: row.url,
-                                        })
-                                      }
-                                    >
-                                      <DoneIcon />
-                                    </IconButton>
-                                    <IconButton
-                                      aria-label="revert"
-                                      onClick={() => setIsEdited(isEdited + 1)}
-                                    >
-                                      <RevertIcon />
-                                    </IconButton>
-                                    <IconButton
-                                      aria-label="delete"
-                                      onClick={() => {
-                                        if (data !== undefined) {
-                                          const isLastItem = data.find(
-                                            (category) => {
-                                              return (
-                                                category.id == row.categoryId
-                                              );
-                                            },
-                                          );
+                          if (
+                            dataUpdate[index].title === newData.title &&
+                            dataUpdate[index].url === newData.url &&
+                            dataUpdate[index].categoryName ===
+                              newData.categoryName
+                          ) {
+                            //do nothing
+                          } else {
+                            editTheVideo(newData);
+                            dataUpdate[index] = newData;
 
-                                          if (isLastItem !== undefined)
-                                            if (isLastItem.videos.length > 1) {
-                                              handleClickOpenDeleteDialog(
-                                                row.id,
-                                              );
-                                            } else {
-                                              handleClickOpenDeleteDialog({
-                                                videoId: row.id,
-                                                categoryId: row.categoryId,
-                                              });
-                                            }
-                                        }
-                                      }}
-                                    >
-                                      <DeleteIcon />
-                                    </IconButton>
-                                  </>
-                                ) : (
-                                  <IconButton
-                                    aria-label="edit"
-                                    onClick={() => onToggleEditMode(row.id)}
-                                  >
-                                    <EditIcon />
-                                  </IconButton>
-                                )}
-                              </TableCell>
+                            setRows([...dataUpdate]);
+                          }
+                        }
+                        resolve();
+                      }, 1000);
+                    }),
+                  onRowDelete: (oldData: iVideos) =>
+                    new Promise((resolve, reject) => {
+                      setTimeout(() => {
+                        {
+                          deleteTheVideo(oldData.id, oldData.categoryId);
+                          const dataUpdate = [...rows];
+                          const index = rows.findIndex(
+                            (x) => x.id === oldData.id,
+                          );
+                          dataUpdate.splice(index, 1);
 
-                              <CustomTableCell
-                                {...{ row, name: 'title', onChange }}
-                              />
-                              <CustomTableCell
-                                {...{ row, name: 'categoryName', onChange }}
-                              />
-                              <CustomTableCell
-                                {...{ row, name: 'url', onChange }}
-                              />
-                            </TableRow>
-                          ))}
-                      </TableBody>
-                    </>
-                  )}
-                </Table>
-              </Paper>
+                          setRows([...dataUpdate]);
+                        }
+                        resolve();
+                      }, 1000);
+                    }),
+                }}
+              />
+
               <EndBox>
                 <span>
                   You can go to
@@ -366,11 +219,13 @@ const AdminArea = () => {
           </Snackbar>
           <Snackbar
             anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-            open={successAndCategorySnackShow}
-            autoHideDuration={1000}
-            onClose={successAndCategorySnackClose}
+            open={createdCategorySnackShow}
+            autoHideDuration={2000}
+            onClose={createdCategorySnackClose}
           >
-            <Alert severity="success">Success!</Alert>
+            <Alert severity="info">
+              Category doensn't exists, creating for you...
+            </Alert>
           </Snackbar>
           <Snackbar
             open={deletedCategorySnackShow}
@@ -384,52 +239,6 @@ const AdminArea = () => {
           </Snackbar>
         </FormContainer>
       </MainContainerFlix>
-
-      <Dialog
-        open={openDeleteDialog}
-        onClose={handleCloseDeleteDialog}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">{'Are you sure?'}</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Are you sure you want to delete this item? This decision is
-            irreversible!
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseDeleteDialog} color="primary">
-            No
-          </Button>
-          <Button onClick={deleteTheVideo} color="primary" autoFocus>
-            Yes
-          </Button>
-        </DialogActions>
-      </Dialog>
-
-      <Dialog
-        open={openEditDialog}
-        onClose={handleCloseEditDialog}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">{'Are you sure?'}</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Are you sure you want to edit this item? This decision is
-            irreversible!
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseEditDialog} color="primary">
-            No
-          </Button>
-          <Button onClick={editTheVideo} color="primary" autoFocus>
-            Yes
-          </Button>
-        </DialogActions>
-      </Dialog>
     </PageDefault>
   );
 };

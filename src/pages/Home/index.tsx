@@ -60,11 +60,7 @@ const Home = () => {
                       url={category.videos[0].url}
                       videoDescription={'Welcome to NotFlix!'}
                     />
-                    <Carousel
-                      ignoreFirstVideo
-                      category={category}
-                      key={category.id}
-                    />
+                    <Carousel ignoreFirstVideo category={category} />
                   </>
                 );
               }

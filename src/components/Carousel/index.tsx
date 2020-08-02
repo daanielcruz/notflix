@@ -22,7 +22,7 @@ const Carousel = ({
 }: {
   ignoreFirstVideo?: boolean;
   category: iCategory;
-  key?: number;
+  key?: number | string;
 }) => {
   const categoryTitle = category.title;
   const videos = category.videos;

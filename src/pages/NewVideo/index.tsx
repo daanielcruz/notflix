@@ -92,13 +92,6 @@ const NewVideo = () => {
             <Form
               onSubmit={(event) => {
                 event.preventDefault();
-
-                const categoryObject = categories.find(
-                  (category: iCategory) => {
-                    return category.title === values.categoryId;
-                  },
-                );
-
                 registerNewVideoAsync(values).then(() => {
                   setValues(initialValues);
                   setSuccessSnackShow(true);
