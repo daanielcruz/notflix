@@ -157,8 +157,8 @@ const NewVideo = () => {
             </Form>
             <EndBox>
               <span>
-                GO
-                <BackLink to="/"> BACK</BackLink>.
+                You can
+                <BackLink to="/"> go back</BackLink>, if you want.
               </span>
               <Hr />
               <div
